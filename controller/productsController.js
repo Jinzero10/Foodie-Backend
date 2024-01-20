@@ -140,7 +140,7 @@ const updateProduct = async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({
-            message: "Error while updating product",
+            message: "Error in updating product",
         });
     }
 };
