@@ -8,6 +8,11 @@ router
     .route("/")
     .post(authMiddleware.protect, orderController.addOrder)
     .get(authMiddleware.protect, orderController.getUserOrder)
+    .put(
+        authMiddleware.protect,
+        authMiddleware.isAdmin,
+        orderController.changeOrderStatus
+    )
     .delete(
         authMiddleware.protect,
         authMiddleware.isAdmin,

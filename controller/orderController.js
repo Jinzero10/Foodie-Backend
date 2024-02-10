@@ -33,7 +33,36 @@ const getAllOrderStatus = async (req, res) => {
         });
     }
 };
+//change order status
+const changeOrderStatus = async (req, res) => {
+    const { selectedItem, id } = req.body;
 
+    try {
+        const statuses = Object.values(OrderStatus).flatMap(Object.values);
+        if (!statuses.includes(selectedItem)) {
+            return res.status(400).json({ error: "Invalid status provided" });
+        }
+
+        const updatedOrder = await Order.findByIdAndUpdate(
+            id,
+            { status: selectedItem },
+            { new: true }
+        );
+
+        if (!updatedOrder) {
+            return res.status(404).json({ error: "Order not found" });
+        }
+
+        res.json({
+            message: "Order status has been updated",
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: "Error while getting changing Orders status",
+        });
+    }
+};
 //get order for user
 const getUserOrder = async (req, res) => {
     try {
@@ -68,6 +97,7 @@ const getAllOrder = async (req, res) => {
         });
     }
 };
+
 // delete Order
 const deleteOrder = async (req, res) => {
     try {
@@ -101,4 +131,5 @@ module.exports = {
     getAllOrder,
     deleteOrder,
     getAllOrderStatus,
+    changeOrderStatus,
 };
